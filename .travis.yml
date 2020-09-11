@@ -1,20 +1,23 @@
 sudo: required
+language: generic
+
 services:
-    - docker
+  - docker
 
 before_install:
-    - docker build -t chandankumar01/docker-reach -f Dockerfile.dev .
-
+  - docker build -t cygnetops/docker-react -f Dockerfile.dev .
 
 script:
-    -  docker run chandankumar/docker-react npm run test -- --coverage
+  - docker run -e CI=true cygnetops/docker-react npm test
 
 deploy:
-    provider: elasticbeanstalk
-    region: "us-east-1"
-    app: "docker-react"
-    env: "DockerReact-env"
-    bucket_name: "elasticbeanstalk-us-east-1-018198557564"
-    bucket_path: "docker-react"
-    on:
-        branch: master
+  provider: elasticbeanstalk
+  region: 'us-east-1'
+  app: 'docker'
+  env: 'docker-env'
+  bucket_name: 'elasticbeanstalk-us-east-1-923445559289'
+  bucket_path: 'docker'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
